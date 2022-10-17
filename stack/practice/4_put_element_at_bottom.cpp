@@ -1,18 +1,36 @@
-#include <bits/stdc++.h>
-void pushatbottom(stack<int> &myStack, int x)
+
+time complaxity o(n ^ 2) space complaxity o(n ^ 2) because of the two recursion with two stack space
+    void insertAtBottom(stack<int> &s, int element)
 {
-    if (myStack.empty())
+    // basecase
+    if (s.empty())
     {
-        myStack.push(x);
+        s.push(element);
         return;
     }
-    int ele = myStack.top();
-    myStack.pop();
-    pushatbottom(myStack, x);
-    myStack.push(ele);
+
+    int num = s.top();
+    s.pop();
+
+    // recursive call
+    insertAtBottom(s, element);
+
+    s.push(num);
 }
-stack<int> pushAtBottom(stack<int> &myStack, int x)
+
+void reverseStack(stack<int> &stack)
 {
-    pushatbottom(myStack, x);
-    return myStack;
+    // base case
+    if (stack.empty())
+    {
+        return;
+    }
+
+    int num = stack.top();
+    stack.pop();
+
+    // recursive call
+    reverseStack(stack);
+
+    insertAtBottom(stack, num);
 }

@@ -1,5 +1,5 @@
-#include <bits/stdc++.h>
-void pushatbottom(stack<int> &myStack)
+// recursive
+void reverce(stack<int> &myStack, int x)
 {
     if (myStack.empty())
     {
@@ -10,8 +10,4 @@ void pushatbottom(stack<int> &myStack)
     pushatbottom(myStack);
     myStack.push(ele);
 }
-stack<int> reverce(stack<int> &myStack)
-{
-    pushatbottom(myStack);
-    return myStack;
-}
+////// can do by the  stack also
