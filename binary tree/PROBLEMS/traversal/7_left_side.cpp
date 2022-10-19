@@ -2,12 +2,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Tree Node
 struct Node
 {
     int data;
-    struct Node *left;
-    struct Node *right;
+    Node *left;
+    Node *right;
 };
+
+vector<int> leftView(struct Node *root);
+
 // Utility function to create a new Tree Node
 Node *newNode(int val)
 {
@@ -18,6 +22,7 @@ Node *newNode(int val)
 
     return temp;
 }
+
 // Function to Build Tree
 Node *buildTree(string str)
 {
@@ -33,6 +38,9 @@ Node *buildTree(string str)
     for (string str; iss >> str;)
         ip.push_back(str);
 
+    // for(string i:ip)
+    //     cout<<i<<" ";
+    // cout<<endl;
     // Create the root of the tree
     Node *root = newNode(stoi(ip[0]));
 
@@ -85,60 +93,8 @@ Node *buildTree(string str)
     return root;
 }
 
-// } Driver Code Ends
-/*  Tree node
-struct Node
-{
-    int data;
-    Node* left, * right;
-}; */
-
-// Should return true if tree is Sum Tree, else false
-class Solution
-{
-    pair<bool, int> helper(Node *root)
-    {
-        if (root == NULL)
-        {
-            pair<bool, int> p = make_pair(true, 0);
-            return p;
-        }
-        if (root->left == NULL && root->right == NULL)
-        {
-
-            pair<bool, int> p = make_pair(true, root->data);
-            return p;
-        }
-        pair<bool, int> l = helper(root->left);
-        pair<bool, int> r = helper(root->right);
-        bool left = l.first;
-        bool right = r.first;
-        bool sum = l.second + r.second == root->data;
-        pair<bool, int> ans;
-        if (left && right && sum)
-        {
-            ans.first = true;
-            ans.second = 2 * root->data;
-        }
-        else
-        {
-            ans.first = false;
-        }
-        return ans;
-    }
-
-public:
-    bool isSumTree(Node *root)
-    {
-        return helper(root).first;
-    }
-};
-
-//{ Driver Code Starts.
-
 int main()
 {
-
     int t;
     scanf("%d ", &t);
     while (t--)
@@ -146,38 +102,80 @@ int main()
         string s;
         getline(cin, s);
         Node *root = buildTree(s);
-        Solution ob;
-        cout << ob.isSumTree(root) << endl;
+        vector<int> vec = leftView(root);
+        for (int x : vec)
+            cout << x << " ";
+        cout << endl;
     }
-    return 1;
+    return 0;
 }
+
 // } Driver Code Ends
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+/* A binary tree node
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// recursive
 class Solution
 {
 public:
-    int sum(Node *root)
+    // Function to return list containing elements of right view of binary tree.
+    void solve(Node *root, vector<int> &ans, int level)
     {
+        // base case
         if (root == NULL)
-            return 0;
-        return root->data + sum(root->left) + sum(root->right);
+            return;
+
+        // we entered into a new level
+        if (level == ans.size())
+            ans.push_back(root->data);
+
+        solve(root->left, ans, level + 1);
+        solve(root->right, ans, level + 1);
     }
-    bool isSumTree(Node *root)
+    vector<int> rightView(Node *root)
     {
-        if (root == NULL)
-            return true;
-        if (root->left == NULL && root->right == NULL)
-            return true;
-        int ans1 = sum(root->left);
-        int ans2 = sum(root->right);
-        if (ans1 + ans2 == root->data)
-        {
-            bool b1 = isSumTree(root->left);
-            bool b2 = isSumTree(root->right);
-            return b1 && b2;
-        }
-        else
-            return false;
+        vector<int> ans;
+        solve(root, ans, 0);
+        return ans;
     }
 };
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Function to return a list containing elements of left view of the binary tree.
+vector<int> leftView(Node *root)
+{
+    vector<int> ans;
+    if (!root)
+        return ans;
+    queue<Node *> q;
+    q.push(root);
+    while (!q.empty())
+    {
+        int size = q.size();
+        for (int i = 0; i < size; i++)
+        {
+            Node *node = q.front();
+            q.pop();
+            if (i == 0)
+                ans.push_back(node->data);
+            if (node->left)
+                q.push(node->left);
+            if (node->right)
+                q.push(node->right);
+        }
+    }
+    return ans;
+}

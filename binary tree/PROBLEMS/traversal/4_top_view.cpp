@@ -1,13 +1,17 @@
 //{ Driver Code Starts
+// Initial Template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
+// Tree Node
 struct Node
 {
     int data;
-    struct Node *left;
-    struct Node *right;
+    Node *left;
+    Node *right;
 };
+
 // Utility function to create a new Tree Node
 Node *newNode(int val)
 {
@@ -18,6 +22,7 @@ Node *newNode(int val)
 
     return temp;
 }
+
 // Function to Build Tree
 Node *buildTree(string str)
 {
@@ -86,51 +91,54 @@ Node *buildTree(string str)
 }
 
 // } Driver Code Ends
-/*  Tree node
+/*
 struct Node
 {
     int data;
-    Node* left, * right;
-}; */
-
-// Should return true if tree is Sum Tree, else false
+    Node* left;
+    Node* right;
+};
+*/
 class Solution
 {
-    pair<bool, int> helper(Node *root)
+public:
+    // Function to return a list of nodes visible from the top view
+    // from left to right in Binary Tree.
+    vector<int> topView(Node *root)
     {
+        vector<int> ans;
         if (root == NULL)
         {
-            pair<bool, int> p = make_pair(true, 0);
-            return p;
+            return ans;
         }
-        if (root->left == NULL && root->right == NULL)
-        {
 
-            pair<bool, int> p = make_pair(true, root->data);
-            return p;
-        }
-        pair<bool, int> l = helper(root->left);
-        pair<bool, int> r = helper(root->right);
-        bool left = l.first;
-        bool right = r.first;
-        bool sum = l.second + r.second == root->data;
-        pair<bool, int> ans;
-        if (left && right && sum)
+        map<int, int> topNode;
+        queue<pair<Node *, int>> q;
+
+        q.push({root, 0});
+
+        while (!q.empty())
         {
-            ans.first = true;
-            ans.second = 2 * root->data;
+            pair<Node *, int> temp = q.front();
+            q.pop();
+            Node *frontNode = temp.first;
+            int hd = temp.second;
+
+            // if one value is present for a HD, then do nothing
+            if (topNode.find(hd) == topNode.end())
+                topNode[hd] = frontNode->data;
+
+            if (frontNode->left)
+                q.push({frontNode->left, hd - 1});
+            if (frontNode->right)
+                q.push({frontNode->right, hd + 1});
         }
-        else
+
+        for (auto i : topNode)
         {
-            ans.first = false;
+            ans.push_back(i.second);
         }
         return ans;
-    }
-
-public:
-    bool isSumTree(Node *root)
-    {
-        return helper(root).first;
     }
 };
 
@@ -138,46 +146,20 @@ public:
 
 int main()
 {
-
-    int t;
-    scanf("%d ", &t);
-    while (t--)
+    int tc;
+    cin >> tc;
+    cin.ignore(256, '\n');
+    while (tc--)
     {
-        string s;
-        getline(cin, s);
-        Node *root = buildTree(s);
+        string treeString;
+        getline(cin, treeString);
         Solution ob;
-        cout << ob.isSumTree(root) << endl;
+        Node *root = buildTree(treeString);
+        vector<int> vec = ob.topView(root);
+        for (int x : vec)
+            cout << x << " ";
+        cout << endl;
     }
-    return 1;
+    return 0;
 }
 // } Driver Code Ends
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-class Solution
-{
-public:
-    int sum(Node *root)
-    {
-        if (root == NULL)
-            return 0;
-        return root->data + sum(root->left) + sum(root->right);
-    }
-    bool isSumTree(Node *root)
-    {
-        if (root == NULL)
-            return true;
-        if (root->left == NULL && root->right == NULL)
-            return true;
-        int ans1 = sum(root->left);
-        int ans2 = sum(root->right);
-        if (ans1 + ans2 == root->data)
-        {
-            bool b1 = isSumTree(root->left);
-            bool b2 = isSumTree(root->right);
-            return b1 && b2;
-        }
-        else
-            return false;
-    }
-};
