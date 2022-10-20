@@ -1,29 +1,32 @@
-#Intuition recursive
-<!--Describe your first thoughts on how to solve this problem.-->
+// #Intuition recursive
+// <!--Describe your first thoughts on how to solve this problem.-->
 
-#Approach recursive
-    <!--Describe your approach to solving the problem.-->
+// #Approach recursive
+//     <!--Describe your approach to solving the problem.-->
 
-#Complexity o(n);
-    - Time complexity : <!--Add your time complexity here, e.g.$$O(n) $$-->
+// #Complexity o(n);
+//     - Time complexity : <!--Add your time complexity here, e.g.$$O(n) $$-->
 
-                        -
-                        Space complexity : o(n)<!--Add your space complexity here, e.g.$$O(n) $$-->
+//                         -
+//                         Space complexity : o(n)<!--Add your space complexity here, e.g.$$O(n) $$-->
 
-#Code
-```
-                                           /**
-                                            * Definition for a binary tree node.
-                                            * struct TreeNode {
-                                            *     int val;
-                                            *     TreeNode *left;
-                                            *     TreeNode *right;
-                                            *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
-                                            *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-                                            *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-                                            * };
-                                            */
-                                           class Solution
+// #Code
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ *
+ */
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  recursive
+class Solution
 {
 public:
     void inorder(TreeNode *root, vector<int> &ans)
@@ -43,4 +46,26 @@ public:
         return ans;
     }
 };
-```
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// iterative
+vector<int> v;
+vector<int> inorderTraversal(TreeNode *root)
+{
+    stack<TreeNode *> s;
+    while (root || !s.empty())
+    {
+        if (root != NULL)
+        {
+            s.push(root);
+            root = root->left;
+        }
+        else
+        {
+            root = s.top();
+            s.pop();
+            v.push_back(root->val);
+            root = root->right;
+        }
+    }
+    return v;
+}

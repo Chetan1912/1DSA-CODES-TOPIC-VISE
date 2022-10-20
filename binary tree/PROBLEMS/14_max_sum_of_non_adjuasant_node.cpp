@@ -46,7 +46,7 @@ lass Solution{
                     pair<int, int> p = make_pair(0, 0);
 return p;
 }
-
+// first one is includeing // second one is excluding
 pair<int, int> left = solve(root->left);
 pair<int, int> right = solve(root->right);
 
