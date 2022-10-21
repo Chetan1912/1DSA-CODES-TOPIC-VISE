@@ -55,13 +55,13 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // iterative
-Approach 1 : -Brute Force
+// Approach 1 : -Brute Force
 
-                 Time Complexity : -O(N *N)
+// Time Complexity : -O(N *N)
 
-                                       Space Complexity : -O(height of tree i.e.O(logN))
+//   Space Complexity : -O(height of tree i.e.O(logN))
 
-                                                              class Solution
+class Solution
 {
 public:
     // search element in postorder array
@@ -126,13 +126,14 @@ public:
         return construct(preorder, postorder, 0, n - 1);
     }
 };
-Approach 2 : -Optimized
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                 Time Complexity : -O(N)
+// Approach 2 : -Optimized
 
-                                       Space Complexity : -O(N)
-
-                                                              class Solution
+//  Time Complexity : -O(N)
+// if used only map not unordered map than it wil be nlogn
+// Space Complexity : -O(N)
+class Solution
 {
 public:
     // mp store the index of corresponding element of postorder
